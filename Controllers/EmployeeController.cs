@@ -51,5 +51,20 @@ namespace EmployeeAdminPortal.Controllers
             return Ok(dbContext.Employees.ToList());
         }
 
+        [HttpPut("UpdateEmployeeById/{id}")]
+        public IActionResult UpdateEmployeeById(Guid id, UpdateEmployeeDTO employee)
+        {
+            var existingEmployee = dbContext.Employees.Find(id);
+            if (existingEmployee is null)
+            {
+                return NotFound();
+            }
+            existingEmployee.Name = employee.Name;
+            existingEmployee.Email = employee.Email;
+            existingEmployee.Phone = employee.Phone;
+            existingEmployee.Salary = employee.Salary;
+            dbContext.SaveChanges();
+            return Ok(existingEmployee);
+        }
     }
 }
