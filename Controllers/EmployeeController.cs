@@ -14,7 +14,7 @@ namespace EmployeeAdminPortal.Controllers
         public ApplicationDbContext dbContext;
         public EmployeeController(ApplicationDbContext dbContext)
         {
-            this.dbContext = dbContext; 
+            this.dbContext = dbContext;
         }
 
         [HttpPost("CreateNewEmployee")]
@@ -27,17 +27,22 @@ namespace EmployeeAdminPortal.Controllers
                 Phone = employee.Phone,
                 Salary = employee.Salary
             };
-    
+
             dbContext.Employees.Add(newEmployee);
             dbContext.SaveChanges();
-    
+
             return Ok(newEmployee);
         }
 
-        [HttpGet("GetEmployeeById")]
+        [HttpGet("GetEmployeeById/{id}")]
         public IActionResult GetEmployeeById(Guid id)
         {
-            return Ok(dbContext.Employees.Find(id));
+            var employee = dbContext.Employees.Find(id);
+            if (employee is null)
+            {
+                return NotFound();
+            }
+            return Ok(employee);
         }
 
         [HttpGet("GetEmployeesList")]
