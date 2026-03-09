@@ -66,5 +66,18 @@ namespace EmployeeAdminPortal.Controllers
             dbContext.SaveChanges();
             return Ok(existingEmployee);
         }
+
+        [HttpDelete("DeleteEmployeeById/{id}")]
+        public IActionResult DeleteEmployeeById(Guid id)
+        {
+            var existingEmployee = dbContext.Employees.Find(id);
+            if (existingEmployee is null)
+            {
+                return NotFound();
+            }
+            dbContext.Employees.Remove(existingEmployee);
+            dbContext.SaveChanges();
+            return Ok(existingEmployee);
+        }
     }
 }
